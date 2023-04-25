@@ -4,7 +4,7 @@
 #### pip install requirements.txt
 
 ## Step 2
-#### python manage.py makemigration
+#### python manage.py makemigrations
 #### python manage.py migrate
 
 ## Step 3
