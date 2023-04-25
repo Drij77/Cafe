@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Address List</h1>
+    <ul>
+    {% for address in addresses %}
+        <li>{{ address.sub_area.area.city.state.country.name }}, {{ address.sub_area.area.city.state.name }}, {{ address.sub_area.area.city.name }}, {{ address.sub_area.area.name }}, {{ address.sub_area.name }}</li>
+    {% empty %}
+        <li>No addresses found.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

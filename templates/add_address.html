@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Create Address</title>
+  </head>
+  <body>
+    <h1>Create Address</h1>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="container">
+  <h2>Add Address</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label >Country:</label>
+      {{ form.country }}
+    </div>
+    <div class="form-group">
+      <label>State:</label>
+      {{ form.state }}
+    </div>
+    <div class="form-group">
+      <label >City:</label>
+      {{ form.city }}
+    </div>
+    <div class="form-group">
+      <label >Area:</label>
+      {{ form.area }}
+    </div>
+    <div class="form-group">
+      <label >SubArea:</label>
+      {{ form.subarea }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+      <button type="submit">Create Address</button>
+    </form>
+  </body>
+</html>

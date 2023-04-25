@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search Cafes</h1>
+<form method="GET" action="">
+    <label for="country">Country:</label>
+    <select name="country" id="country">
+        <option value="">--Select Country--</option>
+        {% for country in countries %}
+        <option value="{{ country.name }}">{{ country.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="state">State:</label>
+    <select name="state" id="state">
+        <option value="">--Select State--</option>
+        {% for state in states %}
+        <option value="{{ state.name }}">{{ state.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="city">City:</label>
+    <select name="city" id="city">
+        <option value="">--Select City--</option>
+        {% for city in cities %}
+        <option value="{{ city.name }}">{{ city.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="area">Area:</label>
+    <select name="area" id="area">
+        <option value="">--Select Area--</option>
+        {% for area in areas %}
+        <option value="{{ area.name }}">{{ area.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="subarea">Sub Area:</label>
+    <select name="subarea" id="subarea">
+        <option value="">--Select Sub Area--</option>
+        {% for subarea in subareas %}
+        <option value="{{ subarea.name }}">{{ subarea.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <input type="submit" value="Show Map">{% csrf_token %}
+<input type="submit" value="Show List">{% csrf_token %}
+
+</form>
+{% if cafes %}
+{% if show_map %}
+<div id="map"></div>
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: new google.maps.LatLng({{ cafes.0.latitude }}, {{ cafes.0.longitude }})
+        });
+        {% for cafe in cafes %}
+        var marker{{ cafe.id }} = new google.maps.Marker({
+            position: new google.maps.LatLng({{ cafe.latitude }}, {{ cafe.longitude }}),
+            map: map,
+            title: "{{ cafe.name }}"
+        });
+        {% endfor %}
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap"></script>
+{% endif %}
+{% if show_list %}
+{% for cafe in cafes %}
+<div class="cafe">
+    <h2>{{ cafe.name }}</h2>
+    <p>{{ cafe.address }}</p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editCafeModal{{ cafe.id }}">
+        Edit
+    </button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCafeModal{{ cafe.id }}">
+        Delete
+    </button>
+</div>
+{% include 'edit_cafe_modal.html' with cafe=cafe %}
+{% include 'delete_cafe_modal.html' with cafe=cafe %}
+{% endfor %}
+{% include 'pagination.html' with page_obj=cafes %}
+{% endif %}
+{% endif %}
+{% endblock %}
